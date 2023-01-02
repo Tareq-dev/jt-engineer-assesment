@@ -1,13 +1,14 @@
+import Multiselect from "multiselect-react-dropdown";
 import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [carService, setCarService] = useState("");
+  const [carService, setCarService] = useState([]);
   const [carName, setCarName] = useState("");
 
   const handleBill = () => {
-    console.log(carService);
     console.log(carName);
+    console.log(carService);
   };
 
   const car = [
@@ -150,18 +151,16 @@ function App() {
             value={carName}
             onChange={(e) => setCarName(e.target.value)}
           >
-            <option defaultValue>
-              Select Type of Car
-            </option>
+            <option defaultValue>Select Type of Car</option>
             <option>Hatchback</option>
             <option>Sedan</option>
             <option>SUV</option>
           </select>
         </div>
-        <div className="">
+        {/* <div className="">
           <p className="pb-3">Select Service:</p>
           <select
-            className="select select-info w-full max-w-xs"
+            
             value={carService}
             onChange={(e) => setCarService(e.target.value)}
           >
@@ -174,7 +173,22 @@ function App() {
             <option>FS01</option>
             <option>GS01</option>
           </select>
+        </div> */}
+        <div className="flex justify-center w-full">
+          <Multiselect
+            isObject={false}
+            onRemove={(e) =>setCarService(e)}
+            onSelect={(e) => setCarService(e)}
+            options={[
+              "BS01",
+              "ES01",
+              "CS01",
+              "FS01",
+              "GS01",
+            ]}
+          />
         </div>
+
         <button
           className="bg-blue-300 px-6 py-1 mt-5 rounded-md cursor-pointer"
           onClick={handleBill}
@@ -182,8 +196,6 @@ function App() {
         >
           Bill
         </button>
-        <p>{carService}</p>
-        <p>{carName}</p>
       </div>
     </div>
   );
