@@ -16,8 +16,11 @@ function App() {
       carService.includes(item.serviceCode)
     );
     setService(filteredItems);
+   
   };
-  const totalPrice = service?.reduce((a, c) => a + c.serviceFee, 0);
+
+
+  // const totalPrice = service.reduce((a, c) => a + c.serviceFee, 0);
   const carData = [
     {
       carName: "hatchback",
