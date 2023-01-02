@@ -5,32 +5,35 @@ import "./App.css";
 function App() {
   const [carService, setCarService] = useState([]);
   const [carName, setCarName] = useState("");
+  const [service, setService] = useState("");
 
   const handleBill = () => {
-    console.log(carName);
-    console.log(carService);
-  };
+    const car = carName.toLowerCase();
+    const selectedCar = carData.find((f) => f.carName === car);
 
-  const car = [
+    const items = selectedCar.service;
+    const filteredItems = items.filter((item) =>
+      carService.includes(item.serviceCode)
+    );
+    setService(filteredItems);
+  };
+  const totalPrice = service?.reduce((a, c) => a + c.serviceFee, 0);
+  const carData = [
     {
       carName: "hatchback",
       service: [
         {
           serviceCode: "BS01",
-          serviceName: "BasicServicing",
+          serviceName: "Basic Servicing",
           serviceFee: 2000,
         },
         {
           serviceCode: "EF01",
-          serviceName: "EngineFixing",
+          serviceName: "Engine Fixing",
           serviceFee: 5000,
         },
-        {
-          serviceCode: "CF01",
-          serviceName: "ClutchFixing",
-          serviceFee: 2000,
-        },
-        { serviceCode: "BF01", serviceName: "BrakeFixing", serviceFee: 1000 },
+        { serviceCode: "CF01", serviceName: "Clutch Fixing", serviceFee: 2000 },
+        { serviceCode: "BF01", serviceName: "Brake Fixing", serviceFee: 1000 },
         { serviceCode: "GF01", serviceName: "GearFixing", serviceFee: 3000 },
       ],
     },
@@ -40,21 +43,21 @@ function App() {
       service: [
         {
           serviceCode: "BS01",
-          serviceName: "BasicServicing",
+          serviceName: "Basic Servicing",
           serviceFee: 4000,
         },
         {
           serviceCode: "EF01",
-          serviceName: "EngineFixing",
+          serviceName: "Engine Fixing",
           serviceFee: 8000,
         },
         {
           serviceCode: "CF01",
-          serviceName: "ClutchFixing",
+          serviceName: "Clutch Fixing",
           serviceFee: 4000,
         },
-        { serviceCode: "BF01", serviceName: "BrakeFixing", serviceFee: 1500 },
-        { serviceCode: "GF01", serviceName: "GearFixing", serviceFee: 6000 },
+        { serviceCode: "BF01", serviceName: "Brake Fixing", serviceFee: 1500 },
+        { serviceCode: "GF01", serviceName: "Gear Fixing", serviceFee: 6000 },
       ],
     },
 
@@ -63,34 +66,25 @@ function App() {
       service: [
         {
           serviceCode: "BS01",
-          serviceName: "BasicServicing",
+          serviceName: "Basic Servicing",
           serviceFee: 5000,
         },
         {
           serviceCode: "EF01",
-          serviceName: "EngineFixing",
+          serviceName: "Engine Fixing",
           serviceFee: 10000,
         },
         {
           serviceCode: "CF01",
-          serviceName: "ClutchFixing",
+          serviceName: "Clutch Fixing",
           serviceFee: 6000,
         },
-        { serviceCode: "BF01", serviceName: "BrakeFixing", serviceFee: 2500 },
-        { serviceCode: "GF01", serviceName: "GearFixing", serviceFee: 8000 },
+        { serviceCode: "BF01", serviceName: "Brake Fixing", serviceFee: 2500 },
+        { serviceCode: "GF01", serviceName: "Gear Fixing", serviceFee: 8000 },
       ],
     },
   ];
 
-  const carH = car.find((f) => f.carName === "hatchback");
-  // console.log(carH);
-  const carHService = carH.service;
-  //serviceCode
-  const servCode = "CF01";
-  const serviceMap = carHService.find((f) => f.serviceCode === servCode);
-
-  const price = serviceMap.serviceFee;
-  // console.log(price);
   return (
     <div className="App my-10">
       <div className="p-10">
@@ -157,35 +151,13 @@ function App() {
             <option>SUV</option>
           </select>
         </div>
-        {/* <div className="">
-          <p className="pb-3">Select Service:</p>
-          <select
-            
-            value={carService}
-            onChange={(e) => setCarService(e.target.value)}
-          >
-            <option defaultValue>
-              Select Service Code
-            </option>
-            <option>BS01</option>
-            <option>ES01</option>
-            <option>CS01</option>
-            <option>FS01</option>
-            <option>GS01</option>
-          </select>
-        </div> */}
+
         <div className="flex justify-center w-full">
           <Multiselect
             isObject={false}
-            onRemove={(e) =>setCarService(e)}
+            onRemove={(e) => setCarService(e)}
             onSelect={(e) => setCarService(e)}
-            options={[
-              "BS01",
-              "ES01",
-              "CS01",
-              "FS01",
-              "GS01",
-            ]}
+            options={["BS01", "EF01", "CF01", "BF01", "GF01"]}
           />
         </div>
 
@@ -196,6 +168,30 @@ function App() {
         >
           Bill
         </button>
+
+        {service.length ? (
+          <div className="py-5">
+            {service.map((s) => (
+              <ul s={s} key={s.serviceCode}>
+                <li className="italic">
+                  Charges for {s.serviceName} : {s.serviceFee} ₹
+                </li>
+              </ul>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+        <hr />
+        <p className="italic font-bold">Total Price : {totalPrice} ₹</p>
+        {totalPrice > 10000 ? (
+          <p>
+            A complimentary cleaning was provided because of your bill more than
+            10,000 ₹
+          </p>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
