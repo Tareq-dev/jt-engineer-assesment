@@ -7,6 +7,9 @@ function App() {
   const [carName, setCarName] = useState("");
   const [service, setService] = useState("");
 
+
+  // Given Data
+  
   const carData = [
     {
       carName: "hatchback",
@@ -74,6 +77,8 @@ function App() {
     },
   ];
 
+  // Handle bill
+
   const handleBill = () => {
     const car = carName.toLowerCase();
     const selectedCar = carData.find((f) => f.carName === car);
@@ -84,6 +89,8 @@ function App() {
     );
     setService(filteredItems);
   };
+
+  // Billing Functionality
 
   const billingInfo = () => {
     if (service.length) {
