@@ -7,20 +7,6 @@ function App() {
   const [carName, setCarName] = useState("");
   const [service, setService] = useState("");
 
-  const handleBill = () => {
-    const car = carName.toLowerCase();
-    const selectedCar = carData.find((f) => f.carName === car);
-
-    const items = selectedCar.service;
-    const filteredItems = items.filter((item) =>
-      carService.includes(item.serviceCode)
-    );
-    setService(filteredItems);
-   
-  };
-
-
-  // const totalPrice = service.reduce((a, c) => a + c.serviceFee, 0);
   const carData = [
     {
       carName: "hatchback",
@@ -88,9 +74,39 @@ function App() {
     },
   ];
 
+  const handleBill = () => {
+    const car = carName.toLowerCase();
+    const selectedCar = carData.find((f) => f.carName === car);
+
+    const items = selectedCar.service;
+    const filteredItems = items.filter((item) =>
+      carService.includes(item.serviceCode)
+    );
+    setService(filteredItems);
+  };
+
+  const billingInfo = () => {
+    if (service.length) {
+      const totalPrice = service.reduce((a, c) => a + c.serviceFee, 0);
+      return (
+        <div>
+          <p className="italic font-bold pt-3">Total Price : {totalPrice} ₹</p>
+          {totalPrice > 10000 ? (
+            <p className="text-green-600">
+              A complimentary cleaning was provided because of your bill more
+              than 10,000 ₹
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
+      );
+    }
+  };
+
   return (
-    <div className="App my-10">
-      <div className="p-10">
+    <div className="App my-5">
+      <div className="md:p-10">
         <h1 className="text-2xl pb-10">Our Car Service</h1>
         <table className="w-full border">
           <thead>
@@ -142,7 +158,6 @@ function App() {
           </tbody>
         </table>
         <div className=" py-4">
-          <p className="pb-3">Select car:</p>
           <select
             className="select select-info w-full max-w-xs"
             value={carName}
@@ -158,6 +173,7 @@ function App() {
         <div className="flex justify-center w-full">
           <Multiselect
             isObject={false}
+            placeholder="Select Service"
             onRemove={(e) => setCarService(e)}
             onSelect={(e) => setCarService(e)}
             options={["BS01", "EF01", "CF01", "BF01", "GF01"]}
@@ -165,7 +181,7 @@ function App() {
         </div>
 
         <button
-          className="bg-blue-300 px-6 py-1 mt-5 rounded-md cursor-pointer"
+          className="bg-blue-400 border-2 border-black font-bold text-white px-6 py-1 mt-5 mb-5 rounded-md cursor-pointer"
           onClick={handleBill}
           type=""
         >
@@ -186,15 +202,7 @@ function App() {
           ""
         )}
         <hr />
-        <p className="italic font-bold">Total Price : {totalPrice} ₹</p>
-        {totalPrice > 10000 ? (
-          <p>
-            A complimentary cleaning was provided because of your bill more than
-            10,000 ₹
-          </p>
-        ) : (
-          ""
-        )}
+        {billingInfo()}
       </div>
     </div>
   );
